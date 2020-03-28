@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import queryString from "query-string";
-import PostMetaInfo from "./PostMetaInfo";
-import CommentComponent from "./Comment";
-import Title from "./Title";
-import { fetchItem, fetchComments } from "../hackernews/api";
-import { withRouter, RouteComponentProps } from "react-router-dom";
-import {Comment, Story} from '../hackernews/api'
-
+import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
+import PostMetaInfo from './PostMetaInfo';
+import CommentComponent from './Comment';
+import Title from './Title';
+import { fetchItem, fetchComments } from '../hackernews/api';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Comment, Story } from '../hackernews/api';
 
 function PostComponent(props: PostComponentProps) {
   const { id } = queryString.parse(props.location.search);
@@ -19,7 +18,7 @@ function PostComponent(props: PostComponentProps) {
   useEffect(() => {
     if (!Array.isArray(id) && id) {
       fetchItem(parseInt(id!))
-        .then(post => {
+        .then((post) => {
           setPost(post);
           setLoadingPost(false);
           return fetchComments(post.kids || [], 0);
@@ -42,40 +41,32 @@ function PostComponent(props: PostComponentProps) {
 
   if (post !== undefined) {
     return (
-        <React.Fragment>
-          {loadingPost === true ? (
-            <h1>Loading</h1>
-          ) : (
-            <React.Fragment>
-              <h1 className="header">
-                <Title url={post.url} title={post.title} id={post.id} />
-              </h1>
-              <PostMetaInfo
-                by={post.by}
-                time={post.time}
-                id={post.id}
-                descendants={post.descendants}
-              />
-              <p dangerouslySetInnerHTML={{ __html: post.text }} />
-            </React.Fragment>
-          )}
-          {loadingComments === true ? (
-            loadingPost === false && <h1>Loading...</h1>
-          ) : (
-            <React.Fragment>
-              {comments && (comments.map((comment: Comment) => (
-                <CommentComponent key={comment.id} comment={comment} />
-              )))}
-            </React.Fragment>
-          )}
-        </React.Fragment>
-      );
+      <React.Fragment>
+        {loadingPost === true ? (
+          <h1>Loading</h1>
+        ) : (
+          <React.Fragment>
+            <h1 className='header'>
+              <Title url={post.url} title={post.title} id={post.id} />
+            </h1>
+            <PostMetaInfo by={post.by} time={post.time} id={post.id} descendants={post.descendants} />
+            <p dangerouslySetInnerHTML={{ __html: post.text }} />
+          </React.Fragment>
+        )}
+        {loadingComments === true ? (
+          loadingPost === false && <h1>Loading...</h1>
+        ) : (
+          <React.Fragment>
+            {comments && comments.map((comment: Comment) => <CommentComponent key={comment.id} comment={comment} />)}
+          </React.Fragment>
+        )}
+      </React.Fragment>
+    );
   }
 
-  return <h1>Nothing to show..</h1>
+  return <h1>Nothing to show..</h1>;
 }
 
-interface PostComponentProps
-  extends RouteComponentProps<{ location?: string }> {}
+interface PostComponentProps extends RouteComponentProps<{ location?: string }> {}
 
 export default withRouter(PostComponent);
