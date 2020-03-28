@@ -33,6 +33,6 @@ const commentStyle = (depth: number) => {
       background: "rgba(128, 128, 128, 0.1411764705882353)",
       padding: "10px",
       margin: `10px 10px 10px ${paddingLeft}px`,
-      "border-radius": "5px"
+      borderRadius: "5px"
     };
   };

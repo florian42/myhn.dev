@@ -41,12 +41,6 @@ function PostComponent(props: PostComponentProps) {
   }
 
   if (post !== undefined) {
-    console.log("state", {
-      post,
-      loadingComments,
-      loadingPost,
-      comments
-    })
     return (
         <React.Fragment>
           {loadingPost === true ? (

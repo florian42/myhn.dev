@@ -4,10 +4,7 @@ import { Story } from "../hackernews/api";
 export default function posts(state = {}, action: PostActionTypes) {
   switch (action.type) {
     case FETCH_ITEMS:
-      return {
-        ...state,
-        ...action.items
-      };
+      return action.items;
     default:
       return state;
   }
