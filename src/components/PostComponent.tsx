@@ -1,49 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import queryString from 'query-string';
 import PostMetaInfo from './PostMetaInfo';
 import CommentComponent from './Comment';
 import Title from './Title';
-import { fetchItem, fetchComments } from '../hackernews/api';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Comment, Story } from '../hackernews/api';
+import { connect } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
+import { getComments, getStory } from '../actions/posts';
 
-function PostComponent(props: PostComponentProps) {
-  const { id } = queryString.parse(props.location.search);
-  const [post, setPost] = useState<Story>();
-  const [loadingPost, setLoadingPost] = useState(true);
-  const [comments, setComments] = useState<Comment[]>();
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [error, setError] = useState(null);
+function PostComponent({ location, fetchComments, fetchStory, posts }: PostComponentProps) {
+  const { id } = queryString.parse(location.search);
+
+  const postId = !Array.isArray(id) && id ? parseInt(id) : null;
+
+  const post = posts && Array.isArray(posts) ? posts.find((post) => post.id === postId) : null;
+
+  const commentIds = post?.kids;
 
   useEffect(() => {
-    if (!Array.isArray(id) && id) {
-      fetchItem(parseInt(id!))
-        .then((post) => {
-          setPost(post);
-          setLoadingPost(false);
-          return fetchComments(post.kids || [], 0);
-        })
-        .then((comments: Comment[]) => {
-          setComments(comments);
-          setLoadingComments(false);
-        })
-        .catch(({ message }) => {
-          setError(message);
-          setLoadingPost(false);
-          setLoadingComments(false);
-        });
+    if (commentIds) {
+      fetchComments(commentIds);
     }
-  }, [id]);
+  }, [commentIds, fetchComments]);
 
-  if (error) {
-    return <h1>Error!</h1>;
-  }
+  useEffect(() => {
+    if (!post && postId) {
+      fetchStory(postId);
+    }
+  }, [post, postId, fetchStory]);
 
   if (post !== undefined) {
     return (
       <React.Fragment>
-        {loadingPost === true ? (
-          <h1>Loading</h1>
+        {!post ? (
+          <h1>Loading post</h1>
         ) : (
           <React.Fragment>
             <h1 className='header'>
@@ -53,13 +45,14 @@ function PostComponent(props: PostComponentProps) {
             <p dangerouslySetInnerHTML={{ __html: post.text }} />
           </React.Fragment>
         )}
-        {loadingComments === true ? (
-          loadingPost === false && <h1>Loading...</h1>
-        ) : (
+        {
           <React.Fragment>
-            {comments && comments.map((comment: Comment) => <CommentComponent key={comment.id} comment={comment} />)}
+            {post &&
+              post.comments &&
+              post.comments.length > 0 &&
+              post.comments.map((comment: Comment) => <CommentComponent key={comment.id} comment={comment} />)}
           </React.Fragment>
-        )}
+        }
       </React.Fragment>
     );
   }
@@ -67,6 +60,21 @@ function PostComponent(props: PostComponentProps) {
   return <h1>Nothing to show..</h1>;
 }
 
-interface PostComponentProps extends RouteComponentProps<{ location?: string }> {}
+export type PostComponentProps = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> &
+  RouteComponentProps<{ location?: string }>;
 
-export default withRouter(PostComponent);
+const mapDispatchToProps = (dispatch: ThunkDispatch<{ posts: Story[] }, {}, Action>) => {
+  return {
+    fetchComments: (commentIds: number[]) => dispatch(getComments(commentIds)),
+    fetchStory: (storyId: number) => dispatch(getStory(storyId)),
+  };
+};
+
+const mapStateToProps = (state: { posts: Story[] }) => {
+  return {
+    posts: state.posts,
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostComponent));

@@ -3,11 +3,10 @@ import PostMetaInfo from './PostMetaInfo';
 import Title from './Title';
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { PostsState } from '../reducer/posts';
-import { fetchMainItems } from '../actions/posts';
+import { getTopItems } from '../actions/posts';
 import { Action } from 'redux';
-import { Story } from '../hackernews/api';
 import { withRouter } from 'react-router-dom';
+import { Story } from '../hackernews/api';
 
 function Posts({ posts, fetchMainPosts }: PostsProps) {
   useEffect(() => {
@@ -17,7 +16,7 @@ function Posts({ posts, fetchMainPosts }: PostsProps) {
   return (
     <ul>
       {posts && posts.length > 0 ? (
-        posts.map((post) => {
+        posts.map((post: Story) => {
           return (
             <li key={post.id} className='post'>
               <Title url={post.url} title={post.title} id={post.id} />
@@ -32,21 +31,18 @@ function Posts({ posts, fetchMainPosts }: PostsProps) {
   );
 }
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<PostsState, {}, Action>) => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<Story[], {}, Action>) => {
   return {
-    fetchMainPosts: () => dispatch(fetchMainItems()),
+    fetchMainPosts: () => dispatch(getTopItems()),
   };
 };
 
-const mapStateToProps = (state: PostsState) => {
+const mapStateToProps = (state: { posts: [] }) => {
   return {
-    posts: state.posts,
+    posts: state.posts ? [...state.posts] : null,
   };
 };
 
-export type PostsProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    posts: Story[];
-  };
+export type PostsProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts));

@@ -21,7 +21,7 @@ export function fetchItem(id: number) {
   return fetch(`${api}/item/${id}${json}`).then((res) => res.json());
 }
 
-export async function fetchComments(ids: number[], depth: number) {
+export async function fetchComments(ids: number[], depth: number): Promise<Comment[]> {
   if (typeof depth == 'number') depth++;
   else depth = 1;
   let comments = await Promise.all(ids.map(fetchItem));
@@ -50,7 +50,7 @@ export function fetchMainPosts(type: 'top' | 'new' | 'best') {
       return ids.slice(0, 50);
     })
     .then((ids: number[]) => Promise.all(ids.map(fetchItem)))
-    .then((posts: Item[]) => removeDeleted(onlyPosts(removeDead(posts))));
+    .then((posts: Story[]) => removeDeleted(onlyPosts(removeDead(posts))));
 }
 
 export function fetchUser(id: string) {
@@ -78,6 +78,7 @@ export interface Story extends Item {
   title: string;
   url: string;
   type: 'story';
+  comments?: Comment[];
 }
 
 export interface Comment extends Item {
