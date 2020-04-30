@@ -9,9 +9,12 @@ import { withRouter } from 'react-router-dom';
 import { Story } from '../hackernews/api';
 
 function Posts({ posts, fetchMainPosts }: PostsProps) {
+
   useEffect(() => {
-    fetchMainPosts();
-  }, [fetchMainPosts]);
+    if (!posts) {
+      fetchMainPosts();
+    }
+  }, [fetchMainPosts, posts]);
 
   return (
     <ul>

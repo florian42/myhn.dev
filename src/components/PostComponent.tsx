@@ -21,9 +21,11 @@ function PostComponent({ location, fetchComments, fetchStory, posts }: PostCompo
 
   useEffect(() => {
     if (commentIds) {
-      fetchComments(commentIds);
+      if (!posts[0].comments) {
+        fetchComments(commentIds);
+      }
     }
-  }, [commentIds, fetchComments]);
+  }, [commentIds, fetchComments, posts]);
 
   useEffect(() => {
     if (!post && postId) {
