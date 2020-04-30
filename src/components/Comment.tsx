@@ -24,9 +24,9 @@ type CommentProps = {
 const commentStyle = (depth: number) => {
   const paddingLeft = 10 * depth;
   return {
-    background: 'rgba(128, 128, 128, 0.1411764705882353)',
     padding: '10px',
     margin: `10px 10px 10px ${paddingLeft}px`,
     borderRadius: '5px',
+    border: '0.5px solid hsl(201, 23%, 60%)'
   };
 };

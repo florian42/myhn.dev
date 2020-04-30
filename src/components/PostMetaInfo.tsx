@@ -7,7 +7,7 @@ export default function PostMetaInfo({ by, time, id, descendants }: PostMetaInfo
       <span>
         by <Link to={`/user?id=${by}`}>{by}</Link>
       </span>
-      <span> on {formatDate(time)}</span>
+      <span> on {formatDate(time)} </span>
       {typeof descendants === 'number' && (
         <span>
           with <Link to={`/post?id=${id}`}>{descendants}</Link> comments
