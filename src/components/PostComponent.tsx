@@ -33,27 +33,29 @@ function PostComponent({ location, fetchComments, fetchStory, posts }: PostCompo
     }
   }, [post, postId, fetchStory]);
 
+  if (!post) {
+    return <h1>Loading post</h1>
+  }
+
+  if (!post.comments) {
+    return <h1>Loading comments</h1>
+  }
+
   if (post !== undefined) {
     return (
-      <React.Fragment>
-        {!post ? (
-          <h1>Loading post</h1>
-        ) : (
-          <React.Fragment>
+      <>
+          <div className="post">
               <Title url={post.url} title={post.title} id={post.id} />
             <PostMetaInfo id={post.id} descendants={post.descendants} />
             <p dangerouslySetInnerHTML={{ __html: post.text }} />
-          </React.Fragment>
-        )}
-        {
-          <React.Fragment>
+          </div>
+          <div className="comments">
             {post &&
               post.comments &&
               post.comments.length > 0 &&
               post.comments.map((comment: Comment) => <CommentComponent key={comment.id} comment={comment} />)}
-          </React.Fragment>
-        }
-      </React.Fragment>
+          </div>
+      </>
     );
   }
 

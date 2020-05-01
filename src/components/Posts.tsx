@@ -28,7 +28,7 @@ function Posts({ posts, fetchMainPosts }: PostsProps) {
           );
         })
       ) : (
-        <h1>Loading...</h1>
+        <h1>Loading top 50 posts</h1>
       )}
     </ul>
   );
