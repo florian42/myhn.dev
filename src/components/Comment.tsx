@@ -22,7 +22,7 @@ type CommentProps = {
 const commentStyle = (depth: number) => {
   const paddingLeft = 10 * depth;
   return {
-    padding: '10px',
+    padding: '8px',
     margin: `10px 10px 10px ${paddingLeft}px`,
     borderLeft: '0.5px solid hsl(201, 23%, 60%)'
   };
