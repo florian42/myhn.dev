@@ -23,7 +23,7 @@ function Posts({ posts, fetchMainPosts }: PostsProps) {
           return (
             <li key={post.id} className='post'>
               <Title url={post.url} title={post.title} id={post.id} />
-              <PostMetaInfo by={post.by} time={post.time} id={post.id} descendants={post.descendants} />
+              <PostMetaInfo id={post.id} descendants={post.descendants} />
             </li>
           );
         })

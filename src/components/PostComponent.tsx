@@ -41,7 +41,7 @@ function PostComponent({ location, fetchComments, fetchStory, posts }: PostCompo
         ) : (
           <React.Fragment>
               <Title url={post.url} title={post.title} id={post.id} />
-            <PostMetaInfo by={post.by} time={post.time} id={post.id} descendants={post.descendants} />
+            <PostMetaInfo id={post.id} descendants={post.descendants} />
             <p dangerouslySetInnerHTML={{ __html: post.text }} />
           </React.Fragment>
         )}
