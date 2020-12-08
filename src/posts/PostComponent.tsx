@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Comment, fetchCommentsWithId, fetchItem } from "../hackernews/api";
-import { fetchComments, fetchStory } from "../posts/postsSlice";
+import { fetchComments, fetchStory } from "./postsSlice";
 import { RootState } from "../reducer";
 import CommentComponent from "./Comment";
 import PostMetaInfo from "./PostMetaInfo";

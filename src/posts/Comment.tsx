@@ -1,5 +1,5 @@
-import React from 'react';
-import { Comment } from '../hackernews/api';
+import React from "react";
+import { Comment } from "../hackernews/api";
 
 export default function CommentComponent({ comment }: CommentProps) {
   const nestedComments = (comment.children || []).map((comment) => {
@@ -7,7 +7,7 @@ export default function CommentComponent({ comment }: CommentProps) {
   });
   return (
     <React.Fragment>
-      <div className='comments' style={commentStyle(comment.depth)}>
+      <div className="comments" style={commentStyle(comment.depth)}>
         <p dangerouslySetInnerHTML={{ __html: comment.text }} />
       </div>
       {nestedComments}
@@ -22,8 +22,8 @@ type CommentProps = {
 const commentStyle = (depth: number) => {
   const paddingLeft = 10 * depth;
   return {
-    padding: '8px',
+    padding: "8px",
     margin: `10px 10px 10px ${paddingLeft}px`,
-    borderLeft: '0.5px solid hsl(201, 23%, 60%)'
+    borderLeft: "0.5px solid hsl(201, 23%, 60%)",
   };
 };
