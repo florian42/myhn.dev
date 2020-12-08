@@ -1,28 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import reducer from './reducer';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import logger from './middleware/logger';
+import { configureStore } from "@reduxjs/toolkit";
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import App from "./App";
+import "./index.css";
+import reducer from "./reducer";
+import * as serviceWorker from "./serviceWorker";
 
-const composeEnhancers = composeWithDevTools({
-  // options like actionSanitizer, stateSanitizer
-});
-
-const middleware = [logger, thunk];
-
-const store = createStore(
+const store = configureStore({
   reducer,
-  /* preloadedState, */ composeEnhancers(
-    applyMiddleware(...middleware)
-    // other store enhancers if any
-  )
-);
+  middleware: [thunk],
+});
 
 ReactDOM.render(
   <Provider store={store}>
@@ -30,7 +19,7 @@ ReactDOM.render(
       <App />
     </React.StrictMode>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
