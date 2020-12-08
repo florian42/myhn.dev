@@ -5,7 +5,9 @@ const postsSlice = createSlice({
   name: "posts",
   initialState: [] as Story[],
   reducers: {
-    fetchPosts(_state, action: PayloadAction<Story[]>) {
+    fetchStories(_state, action: PayloadAction<Story[]>) {
+      console.log("got dispatched");
+
       return action.payload;
     },
     fetchComments(state, action: PayloadAction<Comment[]>) {
@@ -24,6 +26,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { fetchPosts, fetchComments, fetchStory } = postsSlice.actions;
+export const { fetchStories, fetchComments, fetchStory } = postsSlice.actions;
 
 export default postsSlice.reducer;

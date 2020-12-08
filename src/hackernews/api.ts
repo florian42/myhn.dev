@@ -1,5 +1,5 @@
 const api = `https://hacker-news.firebaseio.com/v0`;
-const json = '.json?print=pretty';
+const json = ".json?print=pretty";
 
 function removeDead(posts: Item[]) {
   return posts.filter(Boolean).filter(({ dead }) => dead !== true);
@@ -10,28 +10,31 @@ function removeDeleted(posts: Item[]) {
 }
 
 function onlyComments(posts: Item[]) {
-  return posts.filter(({ type }) => type === 'comment');
+  return posts.filter(({ type }) => type === "comment");
 }
 
 function onlyPosts(posts: Item[]) {
-  return posts.filter(({ type }) => type === 'story');
+  return posts.filter(({ type }) => type === "story") as Story[];
 }
 
 export function fetchItem(id: number) {
   return fetch(`${api}/item/${id}${json}`).then((res) => res.json());
 }
 
-export async function fetchComments(ids: number[], depth: number): Promise<Comment[]> {
-  if (typeof depth == 'number') depth++;
+export async function fetchComments(
+  ids: number[],
+  depth: number
+): Promise<Comment[]> {
+  if (typeof depth == "number") depth++;
   else depth = 1;
   let comments = await Promise.all(ids.map(fetchItem));
   comments = removeDeleted(onlyComments(removeDead(comments)));
   comments = await Promise.all(
     comments.map(async (comment) => {
-      comment['depth'] = depth;
+      comment["depth"] = depth;
       if (comment.kids && comment.kids.length) {
         const children = await fetchComments(comment.kids, depth);
-        comment['children'] = children;
+        comment["children"] = children;
       }
       return comment;
     })
@@ -39,7 +42,7 @@ export async function fetchComments(ids: number[], depth: number): Promise<Comme
   return comments;
 }
 
-export function fetchMainPosts(type: 'top' | 'new' | 'best') {
+export function fetchMainPosts(type: "top" | "new" | "best") {
   return fetch(`${api}/${type}stories${json}`)
     .then((res) => res.json())
     .then((ids) => {
@@ -50,7 +53,7 @@ export function fetchMainPosts(type: 'top' | 'new' | 'best') {
       return ids.slice(0, 50);
     })
     .then((ids: number[]) => Promise.all(ids.map(fetchItem)))
-    .then((posts: Story[]) => removeDeleted(onlyPosts(removeDead(posts))));
+    .then((posts: Story[]) => onlyPosts(removeDeleted(removeDead(posts))));
 }
 
 export function fetchUser(id: string) {
@@ -58,14 +61,16 @@ export function fetchUser(id: string) {
 }
 
 export function fetchPosts(ids: number[]) {
-  return Promise.all(ids.map(fetchItem)).then((posts: Item[]) => removeDeleted(onlyPosts(removeDead(posts))));
+  return Promise.all(ids.map(fetchItem)).then((posts: Item[]) =>
+    removeDeleted(onlyPosts(removeDead(posts)))
+  );
 }
 
 export interface Item {
   by: string;
   id: number;
   kids: number[];
-  type: 'story' | 'comment';
+  type: "story" | "comment";
   time: number;
   dead: boolean;
   deleted: boolean;
@@ -77,13 +82,13 @@ export interface Story extends Item {
   score: number;
   title: string;
   url: string;
-  type: 'story';
+  type: "story";
   comments?: Comment[];
 }
 
 export interface Comment extends Item {
   parent: number;
-  type: 'comment';
+  type: "comment";
   children: Comment[];
   depth: number;
 }

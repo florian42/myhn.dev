@@ -1,9 +1,15 @@
-import { fetchMainPosts, Item, Comment, fetchComments, Story, fetchItem } from '../hackernews/api';
-import { Dispatch } from 'redux';
+import { Dispatch } from "redux";
+import {
+  Comment,
+  fetchComments,
+  fetchItem,
+  Item,
+  Story,
+} from "../hackernews/api";
 
-export const FETCH_ITEMS = 'FETCH_ITEMS';
-export const FETCH_STORY = 'FETCH_STORY';
-export const FETCH_COMMENTS = 'FETCH_COMMENTS';
+export const FETCH_ITEMS = "FETCH_ITEMS";
+export const FETCH_STORY = "FETCH_STORY";
+export const FETCH_COMMENTS = "FETCH_COMMENTS";
 
 interface FetchItemsAction {
   type: typeof FETCH_ITEMS;
@@ -34,26 +40,28 @@ export function fetchStorySuccessful(story: Story): FetchStoryAction {
   };
 }
 
-export function fetchCommentsSuccessful(comments: Comment[]): FetchCommentsAction {
+export function fetchCommentsSuccessful(
+  comments: Comment[]
+): FetchCommentsAction {
   return {
     type: FETCH_COMMENTS,
     comments,
   };
 }
 
-export const getTopItems = () => async (dispatch: Dispatch) => {
-  const posts = await fetchMainPosts('top');
-  dispatch(fetchItemsSuccessful(posts));
-};
-
 export const getStory = (itemId: number) => async (dispatch: Dispatch) => {
   const post = await fetchItem(itemId);
   dispatch(fetchStorySuccessful(post));
 };
 
-export const getComments = (commentIds: number[]) => async (dispatch: Dispatch) => {
+export const getComments = (commentIds: number[]) => async (
+  dispatch: Dispatch
+) => {
   const comments = await fetchComments(commentIds, 0);
   dispatch(fetchCommentsSuccessful(comments));
 };
 
-export type PostActionTypes = FetchItemsAction | FetchCommentsAction | FetchStoryAction;
+export type PostActionTypes =
+  | FetchItemsAction
+  | FetchCommentsAction
+  | FetchStoryAction;

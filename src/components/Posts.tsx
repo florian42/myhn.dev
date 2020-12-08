@@ -1,27 +1,37 @@
-import React, { useEffect } from 'react';
-import PostMetaInfo from './PostMetaInfo';
-import Title from './Title';
-import { connect } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { getTopItems } from '../actions/posts';
-import { Action } from 'redux';
-import { withRouter } from 'react-router-dom';
-import { Story } from '../hackernews/api';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { fetchMainPosts, Story } from "../hackernews/api";
+import { fetchStories } from "../posts/postsSlice";
+import { RootState } from "../reducer";
+import PostMetaInfo from "./PostMetaInfo";
+import Title from "./Title";
 
-function Posts({ posts, fetchMainPosts }: PostsProps) {
+const Posts: React.FC = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector((state: RootState) => state.posts);
 
   useEffect(() => {
-    if (!posts) {
-      fetchMainPosts();
+    async function fetchTopStories() {
+      console.log("executing the fetch");
+
+      const posts = await fetchMainPosts("top");
+
+      dispatch(fetchStories(posts));
     }
-  }, [fetchMainPosts, posts]);
+    console.log({ posts });
+
+    if (!posts.length) {
+      fetchTopStories();
+    }
+  }, [dispatch, posts]);
 
   return (
     <ul>
       {posts && posts.length > 0 ? (
         posts.map((post: Story) => {
           return (
-            <li key={post.id} className='post'>
+            <li key={post.id} className="post">
               <Title url={post.url} title={post.title} id={post.id} />
               <PostMetaInfo id={post.id} descendants={post.descendants} />
             </li>
@@ -32,20 +42,6 @@ function Posts({ posts, fetchMainPosts }: PostsProps) {
       )}
     </ul>
   );
-}
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<Story[], {}, Action>) => {
-  return {
-    fetchMainPosts: () => dispatch(getTopItems()),
-  };
 };
 
-const mapStateToProps = (state: { posts: [] }) => {
-  return {
-    posts: state.posts ? [...state.posts] : null,
-  };
-};
-
-export type PostsProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts));
+export default withRouter(Posts);
