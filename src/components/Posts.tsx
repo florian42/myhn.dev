@@ -13,13 +13,10 @@ const Posts: React.FC = () => {
 
   useEffect(() => {
     async function fetchTopStories() {
-      console.log("executing the fetch");
-
       const posts = await fetchMainPosts("top");
 
       dispatch(fetchStories(posts));
     }
-    console.log({ posts });
 
     if (!posts.length) {
       fetchTopStories();

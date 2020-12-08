@@ -21,7 +21,7 @@ export function fetchItem(id: number) {
   return fetch(`${api}/item/${id}${json}`).then((res) => res.json());
 }
 
-export async function fetchComments(
+export async function fetchCommentsWithId(
   ids: number[],
   depth: number
 ): Promise<Comment[]> {
@@ -33,7 +33,7 @@ export async function fetchComments(
     comments.map(async (comment) => {
       comment["depth"] = depth;
       if (comment.kids && comment.kids.length) {
-        const children = await fetchComments(comment.kids, depth);
+        const children = await fetchCommentsWithId(comment.kids, depth);
         comment["children"] = children;
       }
       return comment;
