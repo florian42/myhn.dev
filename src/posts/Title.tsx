@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Title({ url, title, id }: TitleProps) {
+const Title: React.FC<{
+  url: string;
+  title: string;
+  id: number;
+}> = ({ url, title, id }) => {
   return url ? (
     <a className="link" href={url}>
       {title}
@@ -11,10 +15,6 @@ export default function Title({ url, title, id }: TitleProps) {
       {title}
     </Link>
   );
-}
-
-type TitleProps = {
-  url: string;
-  title: string;
-  id: number;
 };
+
+export default Title;

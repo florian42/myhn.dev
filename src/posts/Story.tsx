@@ -2,25 +2,25 @@ import queryString from "query-string";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Comment, fetchCommentsWithId, fetchItem } from "../hackernews/api";
-import { fetchComments, fetchStory } from "./postsSlice";
+import { fetchCommentsWithId, fetchItem } from "../hackernews/api";
+import { fetchComments, fetchStory } from "./storiesSlice";
 import { RootState } from "../reducer";
-import CommentComponent from "./Comment";
-import PostMetaInfo from "./PostMetaInfo";
+import StoryInfo from "./StoryInfo";
 import Title from "./Title";
+import Comment from "./Comment";
 
-const PostComponent: React.FC<RouteComponentProps<{ location?: string }>> = ({
+const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
   location,
 }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state: RootState) => state.posts);
+  const stories = useSelector((state: RootState) => state.posts);
   const { id } = queryString.parse(location.search);
 
   const postId = !Array.isArray(id) && id ? parseInt(id) : null;
 
   const post =
-    posts && Array.isArray(posts)
-      ? posts.find((post) => post.id === postId)
+    stories && Array.isArray(stories)
+      ? stories.find((post) => post.id === postId)
       : null;
 
   const commentIds = post?.kids;
@@ -58,15 +58,15 @@ const PostComponent: React.FC<RouteComponentProps<{ location?: string }>> = ({
       <>
         <div className="post">
           <Title url={post.url} title={post.title} id={post.id} />
-          <PostMetaInfo id={post.id} descendants={post.descendants} />
+          <StoryInfo id={post.id} descendants={post.descendants} />
           <p dangerouslySetInnerHTML={{ __html: post.text }} />
         </div>
         <div className="comments">
           {post &&
             post.comments &&
             post.comments.length > 0 &&
-            post.comments.map((comment: Comment) => (
-              <CommentComponent key={comment.id} comment={comment} />
+            post.comments.map((comment) => (
+              <Comment key={comment.id} comment={comment} />
             ))}
         </div>
       </>
@@ -76,4 +76,4 @@ const PostComponent: React.FC<RouteComponentProps<{ location?: string }>> = ({
   return <h1>Nothing to show..</h1>;
 };
 
-export default withRouter(PostComponent);
+export default withRouter(Story);

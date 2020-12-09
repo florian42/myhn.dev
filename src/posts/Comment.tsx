@@ -1,9 +1,9 @@
 import React from "react";
-import { Comment } from "../hackernews/api";
+import { Comment as CommentInterface } from "../hackernews/api";
 
-export default function CommentComponent({ comment }: CommentProps) {
+const Comment: React.FC<{ comment: CommentInterface }> = ({ comment }) => {
   const nestedComments = (comment.children || []).map((comment) => {
-    return <CommentComponent key={comment.id} comment={comment} />;
+    return <Comment key={comment.id} comment={comment} />;
   });
   return (
     <React.Fragment>
@@ -13,10 +13,6 @@ export default function CommentComponent({ comment }: CommentProps) {
       {nestedComments}
     </React.Fragment>
   );
-}
-
-type CommentProps = {
-  comment: Comment;
 };
 
 const commentStyle = (depth: number) => {
@@ -27,3 +23,5 @@ const commentStyle = (depth: number) => {
     borderLeft: "0.5px solid hsl(201, 23%, 60%)",
   };
 };
+
+export default Comment;

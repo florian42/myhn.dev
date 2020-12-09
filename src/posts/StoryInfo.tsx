@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function PostMetaInfo({ id, descendants }: PostMetaInfoProps) {
+const StoryInfo: React.FC<{ id: number; descendants: number }> = ({
+  id,
+  descendants,
+}) => {
   return (
     <div className={`meta-info-light`}>
       {typeof descendants === "number" && (
@@ -11,9 +14,6 @@ export default function PostMetaInfo({ id, descendants }: PostMetaInfoProps) {
       )}
     </div>
   );
-}
-
-type PostMetaInfoProps = {
-  id: number;
-  descendants: number;
 };
+
+export default StoryInfo;

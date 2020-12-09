@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { fetchMainPosts, Story } from "../hackernews/api";
-import { fetchStories } from "../posts/postsSlice";
+import { fetchStories } from "./storiesSlice";
 import { RootState } from "../reducer";
-import PostMetaInfo from "./PostMetaInfo";
+import StoryInfo from "./StoryInfo";
 import Title from "./Title";
 
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state: RootState) => state.posts);
+  const stories = useSelector((state: RootState) => state.posts);
 
   useEffect(() => {
     async function fetchTopStories() {
@@ -18,19 +18,19 @@ const Posts: React.FC = () => {
       dispatch(fetchStories(posts));
     }
 
-    if (!posts.length) {
+    if (!stories.length) {
       fetchTopStories();
     }
-  }, [dispatch, posts]);
+  }, [dispatch, stories]);
 
   return (
     <ul>
-      {posts && posts.length > 0 ? (
-        posts.map((post: Story) => {
+      {stories && stories.length > 0 ? (
+        stories.map((post: Story) => {
           return (
             <li key={post.id} className="post">
               <Title url={post.url} title={post.title} id={post.id} />
-              <PostMetaInfo id={post.id} descendants={post.descendants} />
+              <StoryInfo id={post.id} descendants={post.descendants} />
             </li>
           );
         })
