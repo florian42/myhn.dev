@@ -2,9 +2,11 @@ import React from "react";
 import { Comment as CommentInterface } from "../hackernews/api";
 
 const Comment: React.FC<{ comment: CommentInterface }> = ({ comment }) => {
-  const nestedComments = (comment.children || []).map((comment) => {
-    return <Comment key={comment.id} comment={comment} />;
-  });
+  const nestedComments = comment.children
+    ? comment.children.map((comment) => {
+        return <Comment key={comment.id} comment={comment} />;
+      })
+    : undefined;
   return (
     <React.Fragment>
       <div className="comments" style={commentStyle(comment.depth)}>
