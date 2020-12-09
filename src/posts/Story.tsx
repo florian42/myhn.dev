@@ -8,6 +8,7 @@ import { RootState } from "../reducer";
 import StoryInfo from "./StoryInfo";
 import Title from "./Title";
 import Comment from "./Comment";
+import Skeleton from "react-loading-skeleton";
 
 const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
   location,
@@ -46,11 +47,12 @@ const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
   }, [post, postId, dispatch]);
 
   if (!post) {
-    return <h1>Loading post</h1>;
-  }
-
-  if (!post.comments) {
-    return <h1>Loading comments</h1>;
+    return (
+      <div style={{ padding: "8px" }}>
+        <Skeleton width={400} />
+        <Skeleton width={100} />
+      </div>
+    );
   }
 
   if (post !== undefined) {
@@ -62,12 +64,11 @@ const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
           <p dangerouslySetInnerHTML={{ __html: post.text }} />
         </div>
         <div className="comments">
-          {post &&
-            post.comments &&
-            post.comments.length > 0 &&
-            post.comments.map((comment) => (
-              <Comment key={comment.id} comment={comment} />
-            ))}
+          {post && post.comments && post.comments.length > 0
+            ? post.comments.map((comment) => (
+                <Comment key={comment.id} comment={comment} />
+              ))
+            : renderLoading()}
         </div>
       </>
     );
@@ -75,5 +76,16 @@ const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
 
   return <h1>Nothing to show..</h1>;
 };
+
+function renderLoading() {
+  return [...Array(25)].map((_item) => {
+    return (
+      <div style={{ padding: "8px" }}>
+        <Skeleton width={400} />
+        <Skeleton width={100} />
+      </div>
+    );
+  });
+}
 
 export default withRouter(Story);

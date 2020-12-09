@@ -6,6 +6,7 @@ import { fetchStories } from "./storiesSlice";
 import { RootState } from "../reducer";
 import StoryInfo from "./StoryInfo";
 import Title from "./Title";
+import Skeleton from "react-loading-skeleton";
 
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,20 +26,29 @@ const Posts: React.FC = () => {
 
   return (
     <ul>
-      {stories && stories.length > 0 ? (
-        stories.map((post: Story) => {
-          return (
-            <li key={post.id} className="post">
-              <Title url={post.url} title={post.title} id={post.id} />
-              <StoryInfo id={post.id} descendants={post.descendants} />
-            </li>
-          );
-        })
-      ) : (
-        <h1>Loading top 50 posts</h1>
-      )}
+      {stories && stories.length > 0
+        ? stories.map((post: Story) => {
+            return (
+              <li key={post.id} className="post">
+                <Title url={post.url} title={post.title} id={post.id} />
+                <StoryInfo id={post.id} descendants={post.descendants} />
+              </li>
+            );
+          })
+        : renderLoading()}
     </ul>
   );
 };
+
+function renderLoading() {
+  return [...Array(25)].map((_item) => {
+    return (
+      <div style={{ padding: "8px" }}>
+        <Skeleton width={400} />
+        <Skeleton width={100} />
+      </div>
+    );
+  });
+}
 
 export default withRouter(Posts);

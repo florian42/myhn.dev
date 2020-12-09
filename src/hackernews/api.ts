@@ -57,7 +57,7 @@ export function fetchMainPosts(type: "top" | "new" | "best") {
         throw new Error(`There was an error fetching the ${type} posts.`);
       }
 
-      return ids.slice(0, 50);
+      return ids.slice(0, 25);
     })
     .then((ids: number[]) => Promise.all(ids.map(fetchItem)))
     .then((posts: Story[]) => onlyPosts(removeDeleted(removeDead(posts))));
