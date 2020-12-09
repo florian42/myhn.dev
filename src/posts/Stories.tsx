@@ -18,7 +18,7 @@ const Posts: React.FC = () => {
       dispatch(fetchStories(posts));
     }
 
-    if (!stories.length) {
+    if (stories.length < 2) {
       fetchTopStories();
     }
   }, [dispatch, stories]);

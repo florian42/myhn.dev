@@ -23,11 +23,18 @@ export function fetchItem(id: number) {
 
 export async function fetchCommentsWithId(
   ids: number[],
-  depth: number
+  depth: number = 0,
+  start: number = 0,
+  end: number = 25,
+  maxDepth: number = 3
 ): Promise<Comment[]> {
-  if (typeof depth == "number") depth++;
-  else depth = 1;
-  let comments = await Promise.all(ids.map(fetchItem));
+  depth++;
+  if (depth >= maxDepth) {
+    return [];
+  }
+
+  const commentIdsToFetch = ids.slice(start, end);
+  let comments = await Promise.all(commentIdsToFetch.map(fetchItem));
   comments = removeDeleted(onlyComments(removeDead(comments)));
   comments = await Promise.all(
     comments.map(async (comment) => {
