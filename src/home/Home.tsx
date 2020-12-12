@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   const { site } = useParams<{ site: string }>();
 
   React.useEffect(() => {
-    if (site !== selectedSite) {
+    if (site && site !== selectedSite) {
       dispatch(selectSite(site));
     }
   });

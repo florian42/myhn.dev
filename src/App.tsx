@@ -9,6 +9,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
+          <Route path="/" exact component={Home} />
           <Route path="/:site" component={Home} />
           <Route path="/post" exact component={Story} />
           <Route render={() => <h1>404</h1>} />
