@@ -1,28 +1,8 @@
-import { Story } from "../hackernews/api";
-
 export async function fetchHottestStories(): Promise<LobstersStory[]> {
-  const response = await fetch("https://lobste.rs/hottest.json");
+  const response = await fetch(
+    "https://hn.flonatello.dev/.netlify/functions/hn"
+  );
   return response.json();
-}
-
-export function mapToStory(stories: LobstersStory[]): Story[] {
-  return stories.map((story) => {
-    return {
-      by: story.submitter_user.username,
-      id: story.short_id,
-      kids: [],
-      type: "story",
-      time: new Date(story.created_at).getMilliseconds(),
-      dead: false,
-      deleted: false,
-      descendants: story.comment_count,
-      text: story.description,
-      score: story.score,
-      title: story.title,
-      url: story.url,
-      comments: undefined,
-    };
-  });
 }
 
 export interface LobstersStory {

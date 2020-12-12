@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
 import { fetchMainPosts, Story } from "../hackernews/api";
-import { fetchStories } from "./storiesSlice";
+import { fetchHottestStories } from "../lobsters/api";
 import { RootState } from "../reducer";
+import { fetchStories } from "./storiesSlice";
 import StoryInfo from "./StoryInfo";
 import Title from "./Title";
-import Skeleton from "react-loading-skeleton";
-import {
-  fetchHottestStories,
-  LobstersStory,
-  mapToStory,
-} from "../lobsters/api";
 
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,9 +24,9 @@ const Posts: React.FC = () => {
     async function fetchTopStories() {
       const posts = await fetchPosts();
       if (site === "lobsters") {
-        dispatch(fetchStories(mapToStory(posts as LobstersStory[])));
+        dispatch(fetchStories(posts));
       } else {
-        dispatch(fetchStories(posts as Story[]));
+        dispatch(fetchStories(posts));
       }
     }
 
