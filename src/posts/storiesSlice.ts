@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Story, Comment } from "../hackernews/api";
+import { Comment, Story } from "../hackernews/api";
 
 const postsSlice = createSlice({
   name: "posts",
   initialState: [] as Story[],
   reducers: {
     fetchStories(_state, action: PayloadAction<Story[]>) {
-      console.log("got dispatched");
-
       return action.payload;
     },
     fetchComments(state, action: PayloadAction<Comment[]>) {

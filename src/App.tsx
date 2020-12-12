@@ -10,6 +10,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={Posts} />
+          <Route path="/:site" exact component={Posts} />
           <Route path="/post" component={Story} />
           <Route render={() => <h1>404</h1>} />
         </Switch>

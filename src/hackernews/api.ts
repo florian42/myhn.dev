@@ -75,7 +75,7 @@ export function fetchPosts(ids: number[]) {
 
 export interface Item {
   by: string;
-  id: number;
+  id: number | string;
   kids: number[];
   type: "story" | "comment";
   time: number;

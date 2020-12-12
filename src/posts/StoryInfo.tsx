@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const StoryInfo: React.FC<{ id: number; descendants: number }> = ({
+const StoryInfo: React.FC<{ id: number | string; descendants: number }> = ({
   id,
   descendants,
 }) => {

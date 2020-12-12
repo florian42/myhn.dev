@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Title: React.FC<{
   url: string;
   title: string;
-  id: number;
+  id: number | string;
 }> = ({ url, title, id }) => {
   return url ? (
     <>

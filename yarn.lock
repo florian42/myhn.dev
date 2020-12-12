@@ -8689,7 +8689,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.4"
 
-prop-types@^15.5.6, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8921,13 +8921,6 @@ react-loading-skeleton@^2.1.1:
   dependencies:
     "@emotion/core" "^10.0.22"
 
-react-redux-loading@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-redux-loading/-/react-redux-loading-1.0.1.tgz#b03685c6c0304681b3097a27a3e6ee9b534fd699"
-  integrity sha512-FXEW1fCU7yeJHDuJ1OTG3VUHtllpw6ezenVVl/b64f25MCxd9Vsnm+N/4g5/rx89/FGGr+IMMVO3cpLhvxqLTw==
-  dependencies:
-    prop-types "^15.5.6"
-
 react-redux@^7.2.0:
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.2.2.tgz#03862e803a30b6b9ef8582dadcc810947f74b736"
@@ -8939,7 +8932,7 @@ react-redux@^7.2.0:
     prop-types "^15.7.2"
     react-is "^16.13.1"
 
-react-router-dom@^5.1.2:
+react-router-dom@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"
   integrity sha512-gxAmfylo2QUjcwxI63RhQ5G85Qqt4voZpUXSEqCwykV0baaOTQDR1f0PmY8AELqIyVc0NEZUj0Gov5lNGcXgsA==
