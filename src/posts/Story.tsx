@@ -14,7 +14,7 @@ const Story: React.FC<RouteComponentProps<{ location?: string }>> = ({
   location,
 }) => {
   const dispatch = useDispatch();
-  const stories = useSelector((state: RootState) => state.posts);
+  const stories = useSelector((state: RootState) => state.posts.stories);
   const { id } = queryString.parse(location.search);
 
   const postId = !Array.isArray(id) && id ? parseInt(id) : null;

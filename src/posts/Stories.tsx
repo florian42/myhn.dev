@@ -4,13 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMainPosts, Story } from "../hackernews/api";
 import { fetchHottestStories } from "../lobsters/api";
 import { RootState } from "../reducer";
-import { fetchStories } from "./storiesSlice";
+import {
+  fetchStoriesFailed,
+  fetchStoriesStarted,
+  fetchStoriesSuccess,
+} from "./storiesSlice";
 import StoryInfo from "./StoryInfo";
 import Title from "./Title";
 
 const Stories: React.FC = () => {
   const dispatch = useDispatch();
-  const stories = useSelector((state: RootState) => state.posts);
+  const { stories, loading } = useSelector((state: RootState) => state.posts);
   const { selectedSite } = useSelector((state: RootState) => state.app);
 
   const fetchPosts = React.useCallback<() => Promise<Story[]>>(() => {
@@ -22,14 +26,18 @@ const Stories: React.FC = () => {
   useEffect(() => {
     async function fetchTopStories() {
       const posts = await fetchPosts();
-      dispatch(fetchStories(posts));
+      dispatch(fetchStoriesSuccess(posts));
     }
-
-    fetchTopStories();
+    dispatch(fetchStoriesStarted());
+    try {
+      fetchTopStories();
+    } catch (error) {
+      dispatch(fetchStoriesFailed(error));
+    }
   }, [dispatch, fetchPosts]);
   return (
     <ul>
-      {stories && stories.length > 0
+      {!loading
         ? stories.map((post: Story) => {
             return (
               <li key={post.id} className="post">
