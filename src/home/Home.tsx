@@ -17,13 +17,29 @@ const Home: React.FC = () => {
     }
   });
 
+  function isActive(site: string) {
+    return selectedSite === site;
+  }
+
   return (
     <>
-      <nav>
-        <NavLink exact to="/hn">
+      <nav style={{ display: "flex", justifyContent: "space-evenly" }}>
+        <NavLink
+          exact
+          to="/hn"
+          isActive={() => isActive("hn")}
+          style={isActive("hn") ? { color: "hsl(201, 23%, 47%)" } : undefined}
+        >
           Hacker News
         </NavLink>
-        <NavLink exact to="/lobsters">
+        <NavLink
+          exact
+          to="/lobsters"
+          style={
+            isActive("lobsters") ? { color: "hsl(201, 23%, 47%)" } : undefined
+          }
+          isActive={() => isActive("lobsters")}
+        >
           Lobsters
         </NavLink>
       </nav>
