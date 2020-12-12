@@ -19,12 +19,10 @@ const Posts: React.FC = () => {
 
   const { site } = useParams<{ site: string }>();
 
-  console.log({ site });
-
   const fetchPosts =
     site === "lobsters"
       ? () => fetchHottestStories()
-      : () => fetchMainPosts("top");
+      : async () => fetchMainPosts();
 
   useEffect(() => {
     async function fetchTopStories() {

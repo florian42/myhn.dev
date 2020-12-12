@@ -49,18 +49,11 @@ export async function fetchCommentsWithId(
   return comments;
 }
 
-export function fetchMainPosts(type: "top" | "new" | "best") {
-  return fetch(`${api}/${type}stories${json}`)
-    .then((res) => res.json())
-    .then((ids) => {
-      if (!ids) {
-        throw new Error(`There was an error fetching the ${type} posts.`);
-      }
-
-      return ids.slice(0, 25);
-    })
-    .then((ids: number[]) => Promise.all(ids.map(fetchItem)))
-    .then((posts: Story[]) => onlyPosts(removeDeleted(removeDead(posts))));
+export async function fetchMainPosts() {
+  const response = await fetch(
+    "https://hn.flonatello.dev/.netlify/functions/hn"
+  );
+  return response.json();
 }
 
 export function fetchUser(id: string) {
