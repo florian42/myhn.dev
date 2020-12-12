@@ -1,6 +1,6 @@
 export async function fetchHottestStories(): Promise<LobstersStory[]> {
   const response = await fetch(
-    "https://hn.flonatello.dev/.netlify/functions/hn"
+    "http://localhost:55799/.netlify/functions/lobsters"
   );
   return response.json();
 }
